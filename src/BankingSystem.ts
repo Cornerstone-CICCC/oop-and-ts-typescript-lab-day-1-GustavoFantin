@@ -7,8 +7,8 @@
 // 6. Implement a function `closeAccount` that removes an account from the array and returns a confirmation string.
 
 enum TransactionType {
-  Deposit,
-  Withdraw
+  Deposit="Deposit",
+  Withdraw="Withdraw"
 }
 
 type Transaction = {
@@ -26,29 +26,82 @@ type BankAccount = {
   transactions: Transaction[]
 }
 
-const accounts: BankAccount[] = [];
+let accounts: BankAccount[] = [];
 
-function createAccount(accountNo, firstname, lastname, initialDeposit, isActive = true) {
+function createAccount(accountNo:number, firstname:string, lastname:string, initialDeposit:number, isActive:boolean = true):BankAccount[] {
+  accounts.push({
+    accountNo,
+    firstname,
+    lastname,
+    balance: initialDeposit,
+    isActive,
+    transactions: []
+  })
+  
+  return accounts
+}
+
+function processTransaction(accountNo:number, amount:number, transactionType:TransactionType):Transaction[] {
+  const findAcc = accounts.filter(acc => acc.accountNo === accountNo);
+  const account = findAcc[0]
+ 
+ 
+  const transaction: Transaction = {
+    accountNo,
+    amount,
+    type: transactionType
+  };
+  
+  
+  if(transactionType === TransactionType.Deposit) {
+    account.balance += amount 
+    console.log(`${amount} deposited into account number ${accountNo}`);
+    
+  } else if (transactionType === TransactionType.Withdraw) {
+    if (account.balance < amount) {
+      console.error('Insufficient funds for withdrawal')
+    } else {
+      account.balance -= amount
+      console.log(`${amount} withdrawn from account number ${accountNo}`);
+      
+    }
+  }
+
+  account.transactions.push(transaction)
 
 }
 
-function processTransaction(accountNo, amount, transactionType) {
+function getBalance(accountNo:number) {
+  const findAcc = accounts.filter(acc => acc.accountNo === accountNo);
+  const account = findAcc[0]
+
+console.log(account.balance);
 
 }
 
-function getBalance(accountNo) {
+function getTransactionHistory(accountNo:number) {
+  const findAcc = accounts.filter(acc => acc.accountNo === accountNo);
+  const account = findAcc[0]
 
+  return account.transactions
 }
 
-function getTransactionHistory(accountNo) {
+function checkActiveStatus(accountNo:number) {
+  const findAcc = accounts.filter(acc => acc.accountNo === accountNo);
+  const account = findAcc[0]
 
+  return account.isActive
 }
 
-function checkActiveStatus(accountNo) {
+function closeAccount(accountNo:number) {
+  const findAcc = accounts.filter(acc => acc.accountNo === accountNo);
+  const account = findAcc[0]
+  const index = accounts.findIndex(acc => acc.accountNo === accountNo);
 
-}
-
-function closeAccount(accountNo) {
+  if (index !== -1) {
+    accounts.splice(index, 1)
+    return `Account number ${accountNo} closed`
+  }
 
 }
 
