@@ -8,34 +8,74 @@
 // 7. Create a function called removeBook which will remove a book from the library array. The return needs to be a string.
 
 enum BookGenre {
-  Fantasy,
-  // add 4 more
+  Fantasy="Fantasy",
+  Romance="Romance",
+  Fiction="Fiction",
+  Drama="Drama",
+  Suspense="Suspense"
 }
 
 type Book = {
-
+  bookId: number,
+  title: string,
+  author: string,
+  genre: BookGenre,
+  isAvailable: boolean
 }
 
 let library: Book[] = [];
 
-function addBook(bookId, title, author, genre) {
+function addBook(bookId:number, title:string, author:string, genre:BookGenre):Book[] {
+  library.push({ bookId, title, author, genre, isAvailable: true });
+  return library;
+}
+
+function borrowBook(bookId:number):string {
+  const book = library.find((buk) => buk.bookId === bookId);
+  
+  if (!book) {
+    return `There's no book with the bookId ${bookId}`;
+  }
+
+  if (!book.isAvailable){
+    return `${book.title} is already borrowed.`
+  }
+  
+  book.isAvailable = false;
+  
+  return `${book.title} has been borrowed.`;
+
 
 }
 
-function borrowBook(bookId) {
+function returnBook(bookId:number):string {
+  const book = library.find((buk) => buk.bookId === bookId);
+  
+  if (!book) {
+    return `There's no book with the bookId ${bookId}`
+  }
 
+  return `${book.title} has been returned.`;
+  
+  
+  
 }
 
-function returnBook(bookId) {
+function checkAvailability(bookId:number):boolean {
+  const book = library.find((buk) => buk.bookId === bookId);
 
+  if (book) {
+    return book.isAvailable = true
+  } else {
+    return false
+  }
 }
 
-function checkAvailability(bookId) {
-
-}
-
-function removeBook(bookId) {
-
+function removeBook(bookId:number) {
+  const index = library.findIndex((buk) => buk.bookId === bookId);
+  if (index === -1) return "Book not found.";
+  const removedBook = library.splice(index, 1)[0];
+  return `${removedBook.title} has been removed from the library.`
 }
 
 // Test cases (Create more if needed)

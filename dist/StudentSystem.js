@@ -6,14 +6,36 @@
 // 4. Create a function called updateStatus which updates a student's status. The return needs to be a string.
 // 5. Create a function called addSubject which adds a subject to a student’s subjects array. The return needs to be a string.
 // 6. Create a function called getStudent which returns a student’s information based on studentId.
-var students = [];
+let students = [];
 function addStudent(studentId, name, age, subjects, status) {
+    students.push({
+        studentId,
+        name,
+        age,
+        subjects,
+        status
+    });
+    return students;
 }
 function updateStatus(studentId, status) {
+    const student = students.find((stud) => stud.studentId === studentId);
+    if (!student)
+        return `No Student with ID ${studentId}.`;
+    student.status = status;
+    return `${student.name} has ${status}`;
 }
 function addSubject(studentId, subject) {
+    const student = students.find((stud) => stud.studentId === studentId);
+    if (!student)
+        return `No Student with ID ${studentId}.`;
+    student.subjects.push(subject);
+    return `${subject} added to ${student.name}'s subjects.`;
 }
 function getStudent(studentId) {
+    const student = students.find((stud) => stud.studentId === studentId);
+    if (student) {
+        return student;
+    }
 }
 // Test cases (Create more if needed)
 console.log(addStudent(1, "Alice", 20, ["Math", "Science"], "active")); // { studentId: 1, name: "Alice", age: 20, subjects: ["Math", "Science"], status: "active" }

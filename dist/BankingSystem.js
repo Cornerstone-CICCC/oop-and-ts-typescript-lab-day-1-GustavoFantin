@@ -11,30 +11,29 @@ var TransactionType;
     TransactionType["Deposit"] = "Deposit";
     TransactionType["Withdraw"] = "Withdraw";
 })(TransactionType || (TransactionType = {}));
-var accounts = [];
-function createAccount(accountNo, firstname, lastname, initialDeposit, isActive) {
-    if (isActive === void 0) { isActive = true; }
+let accounts = [];
+function createAccount(accountNo, firstname, lastname, initialDeposit, isActive = true) {
     accounts.push({
-        accountNo: accountNo,
-        firstname: firstname,
-        lastname: lastname,
+        accountNo,
+        firstname,
+        lastname,
         balance: initialDeposit,
-        isActive: isActive,
+        isActive,
         transactions: []
     });
     return accounts;
 }
 function processTransaction(accountNo, amount, transactionType) {
-    var findAcc = accounts.filter(function (acc) { return acc.accountNo === accountNo; });
-    var account = findAcc[0];
-    var transaction = {
-        accountNo: accountNo,
-        amount: amount,
+    const findAcc = accounts.filter(acc => acc.accountNo === accountNo);
+    const account = findAcc[0];
+    const transaction = {
+        accountNo,
+        amount,
         type: transactionType
     };
     if (transactionType === TransactionType.Deposit) {
         account.balance += amount;
-        console.log("".concat(amount, " deposited into account number ").concat(accountNo));
+        console.log(`${amount} deposited into account number ${accountNo}`);
     }
     else if (transactionType === TransactionType.Withdraw) {
         if (account.balance < amount) {
@@ -42,33 +41,33 @@ function processTransaction(accountNo, amount, transactionType) {
         }
         else {
             account.balance -= amount;
-            console.log("".concat(amount, " withdrawn from account number ").concat(accountNo));
+            console.log(`${amount} withdrawn from account number ${accountNo}`);
         }
     }
     account.transactions.push(transaction);
 }
 function getBalance(accountNo) {
-    var findAcc = accounts.filter(function (acc) { return acc.accountNo === accountNo; });
-    var account = findAcc[0];
+    const findAcc = accounts.filter(acc => acc.accountNo === accountNo);
+    const account = findAcc[0];
     console.log(account.balance);
 }
 function getTransactionHistory(accountNo) {
-    var findAcc = accounts.filter(function (acc) { return acc.accountNo === accountNo; });
-    var account = findAcc[0];
+    const findAcc = accounts.filter(acc => acc.accountNo === accountNo);
+    const account = findAcc[0];
     return account.transactions;
 }
 function checkActiveStatus(accountNo) {
-    var findAcc = accounts.filter(function (acc) { return acc.accountNo === accountNo; });
-    var account = findAcc[0];
+    const findAcc = accounts.filter(acc => acc.accountNo === accountNo);
+    const account = findAcc[0];
     return account.isActive;
 }
 function closeAccount(accountNo) {
-    var findAcc = accounts.filter(function (acc) { return acc.accountNo === accountNo; });
-    var account = findAcc[0];
-    var index = accounts.findIndex(function (acc) { return acc.accountNo === accountNo; });
+    const findAcc = accounts.filter(acc => acc.accountNo === accountNo);
+    const account = findAcc[0];
+    const index = accounts.findIndex(acc => acc.accountNo === accountNo);
     if (index !== -1) {
         accounts.splice(index, 1);
-        return "Account number ".concat(accountNo, " closed");
+        return `Account number ${accountNo} closed`;
     }
 }
 // Test cases (students should add more)

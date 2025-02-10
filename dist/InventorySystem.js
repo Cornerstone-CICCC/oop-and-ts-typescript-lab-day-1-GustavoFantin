@@ -5,12 +5,27 @@
 // 3. Create a function called addItem which adds an item to the inventory array. The function needs to return an InventoryItem object.
 // 4. Create a function called updateStock which updates the quantity of an item. The return needs to be a string.
 // 5. Create a function called checkStock which returns true if the item is available and false otherwise.
-var inventory = [];
+let inventory = [];
 function addItem(itemId, itemName, quantity, isAvailable) {
+    inventory.push({
+        itemId,
+        details: [itemName, quantity, isAvailable]
+    });
+    return inventory;
 }
 function updateStock(itemId, quantity) {
+    const item = inventory.find(item => item.itemId === itemId);
+    if (!item) {
+        return `Item with ID ${itemId} not found.`;
+    }
+    item.details[1] = quantity;
+    return `Stock updated for ${item.details[0]}, new quantity: ${quantity}`;
 }
 function checkStock(itemId) {
+    const item = inventory.find(item => item.itemId === itemId);
+    if (!item)
+        return false;
+    return item.details[2];
 }
 // Test cases (Create more if needed)
 console.log(addItem(1, "Laptop", 5, true)); // { itemId: 1, details: ["Laptop", 5, true] }

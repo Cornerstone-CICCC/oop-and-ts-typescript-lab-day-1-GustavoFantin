@@ -9,14 +9,50 @@
 var MovieGenre;
 (function (MovieGenre) {
     MovieGenre[MovieGenre["Action"] = 0] = "Action";
-    // add 4 more
+    MovieGenre[MovieGenre["Comedy"] = 1] = "Comedy";
+    MovieGenre[MovieGenre["Horror"] = 2] = "Horror";
+    MovieGenre[MovieGenre["Fantasy"] = 3] = "Fantasy";
+    MovieGenre[MovieGenre["Musical"] = 4] = "Musical";
 })(MovieGenre || (MovieGenre = {}));
-var movies = [];
+let movies = [];
 function addMovie(movieId, title, genre, availableSeats) {
+    const movie = {
+        movieId,
+        title,
+        genre,
+        availableSeats
+    };
+    movies.push(movie);
+    return movie;
 }
 function bookSeat(movieId, rowLetter, seatNumber) {
+    const findMov = movies.filter(muv => muv.movieId === movieId);
+    const myMuv = findMov[0];
+    let booked = false;
+    if (myMuv) {
+        myMuv.availableSeats = myMuv.availableSeats.filter((seat) => {
+            if (seat[0] === rowLetter && seat[1] === seatNumber) {
+                return false;
+            }
+            booked = true;
+        });
+    }
+    else {
+        return "Movie not found";
+    }
+    if (booked = true) {
+        return `Seat ${rowLetter}${seatNumber} booked successfully`;
+    }
+    else {
+        return `Seat ${rowLetter}${seatNumber} failed!`;
+    }
 }
 function checkSeatAvailability(movieId, rowLetter, seatNumber) {
+    const isAvailable = movies
+        .filter((movie) => movieId === movie.movieId)
+        .flatMap((movie) => movie.availableSeats)
+        .filter((seat) => seat[0] === rowLetter && seat[1] === seatNumber);
+    return isAvailable;
 }
 // Test cases (Create more if needed)
 console.log(addMovie(1, "Avengers", MovieGenre.Action, [["A", 1], ["A", 2]])); // { movieId: 1, title: "Avengers", genre: MovieGenre.Action, availableSeats: [["A", 1], ["A", 2]] }

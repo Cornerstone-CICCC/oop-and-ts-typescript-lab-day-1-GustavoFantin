@@ -9,19 +9,50 @@
 // 7. Create a function called removeBook which will remove a book from the library array. The return needs to be a string.
 var BookGenre;
 (function (BookGenre) {
-    BookGenre[BookGenre["Fantasy"] = 0] = "Fantasy";
-    // add 4 more
+    BookGenre["Fantasy"] = "Fantasy";
+    BookGenre["Romance"] = "Romance";
+    BookGenre["Fiction"] = "Fiction";
+    BookGenre["Drama"] = "Drama";
+    BookGenre["Suspense"] = "Suspense";
 })(BookGenre || (BookGenre = {}));
-var library = [];
+let library = [];
 function addBook(bookId, title, author, genre) {
+    library.push({ bookId, title, author, genre, isAvailable: true });
+    return library;
 }
 function borrowBook(bookId) {
+    const book = library.find((buk) => buk.bookId === bookId);
+    if (!book) {
+        return `There's no book with the bookId ${bookId}`;
+    }
+    if (!book.isAvailable) {
+        return `${book.title} is already borrowed.`;
+    }
+    book.isAvailable = false;
+    return `${book.title} has been borrowed.`;
 }
 function returnBook(bookId) {
+    const book = library.find((buk) => buk.bookId === bookId);
+    if (!book) {
+        return `There's no book with the bookId ${bookId}`;
+    }
+    return `${book.title} has been returned.`;
 }
 function checkAvailability(bookId) {
+    const book = library.find((buk) => buk.bookId === bookId);
+    if (book) {
+        return book.isAvailable = true;
+    }
+    else {
+        return false;
+    }
 }
 function removeBook(bookId) {
+    const index = library.findIndex((buk) => buk.bookId === bookId);
+    if (index === -1)
+        return "Book not found.";
+    const removedBook = library.splice(index, 1)[0];
+    return `${removedBook.title} has been removed from the library.`;
 }
 // Test cases (Create more if needed)
 console.log(addBook(1, "The Hobbit", "J.R.R. Tolkien", BookGenre.Fantasy)); // { bookId: 1, title: "The Hobbit", author: "J.R.R. Tolkien", genre: BookGenre.Fantasy, isAvailable: true }
